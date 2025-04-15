@@ -1,109 +1,136 @@
-import logo from './logo.svg';
-import './App.css';
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
+function Section({ title, children }) {
+  return (
+    <section className="max-w-5xl mx-auto py-20 px-6">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="text-4xl font-bold text-gray-800 dark:text-white mb-10 border-b-4 border-blue-500 inline-block"
+      >
+        {title}
+      </motion.h2>
+      {children}
+    </section>
+  );
+}
+
+function Tag({ label }) {
+  return (
+    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm mr-2 mb-2 inline-block">
+      {label}
+    </span>
+  );
+}
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <header className="text-center mb-10">
-        <h1 className="text-4xl font-bold">Michael Selvaraj</h1>
-        <p className="text-lg mt-2">Entrepreneur & Developer</p>
-        <p className="mt-4 max-w-2xl mx-auto">
-          I specialize in building livestream and video streaming solutions that enhance customer engagement and drive business growth. Let’s connect and collaborate!
-        </p>
+    <main className={`font-sans ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-800"}`}>
+      <header className="relative h-screen bg-black text-white flex flex-col justify-center items-center text-center overflow-hidden">
+        <video autoPlay muted loop className="absolute inset-0 w-full h-full object-cover opacity-30">
+          <source
+            src="https://www.apple.com/105/media/us/home/2023/fc640163-831e-4032-baa1-4c8e043fcad0/anim/hero/xlarge_2x.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute top-5 right-5 z-20">
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="bg-white text-black dark:bg-gray-700 dark:text-white px-4 py-2 rounded shadow-md"
+          >
+            Toggle {darkMode ? "Light" : "Dark"} Mode
+          </button>
+        </div>
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 px-6">
+          <motion.div
+            className="w-32 h-32 rounded-full border-4 border-white shadow-md bg-gray-200 flex items-center justify-center text-gray-600 text-sm"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+          >
+            Add Image
+          </motion.div>
+          <div>
+            <motion.h1
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="text-5xl md:text-6xl font-extrabold mb-4"
+            >
+              Michael Selvaraj
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 1 }}
+              className="text-xl md:text-2xl"
+            >
+              Entrepreneur & Developer specializing in livestream commerce & mobile innovation.
+            </motion.p>
+          </div>
+        </div>
       </header>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Skills</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <Section title="Skills">
+        <motion.div
+          className="flex flex-wrap gap-3"
+          initial="hidden"
+          whileInView="visible"
+          transition={{ staggerChildren: 0.1 }}
+          viewport={{ once: true }}
+        >
           {[
             "React Native",
             "Spring Boot",
             "AWS",
+            "CRM/ERP Solutions",
             "Angular",
             "TypeScript",
             "Node.js",
-            "CRM/ERP Development",
-            "Mobile App Development"
+            "Mobile App Development",
+            "SaaS Development",
+            "Web Design"
           ].map((skill) => (
-            <Card key={skill}>
-              <CardContent className="p-4 text-center font-medium">{skill}</CardContent>
-            </Card>
+            <motion.div
+              key={skill}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Tag label={skill} />
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </Section>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Projects</h2>
-        <div className="space-y-6">
-          {[{
-            title: "eStreamly",
-            description: "Scalable video streaming platform with Shopify integration, social media APIs, and in-stream purchases.",
-            tech: "React Native, Angular, TypeScript, AWS",
-          }, {
-            title: "Reach Lite",
-            description: "Salon admin panel with real-time booking, staff scheduling, and service add-ons.",
-            tech: "Angular, Firebase, TypeScript",
-          }, {
-            title: "EduManage CMS",
-            description: "College CMS for role-based dashboards and real-time data visualization.",
-            tech: "Angular, TypeScript",
-          }, {
-            title: "Police E-Eye",
-            description: "Traffic violation control app with live feeds, auto-reporting, and responsive UI for officers.",
-            tech: "React Native, Firebase",
-          }].map((project) => (
-            <Card key={project.title}>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className="mb-2">{project.description}</p>
-                <p className="text-sm text-gray-600">Tech Stack: {project.tech}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+      <Section title="Contact">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <p className="mb-4">Feel free to reach out via email or connect with me on social platforms below:</p>
+          <div className="flex gap-6 text-blue-600 dark:text-blue-400">
+            <a href="https://github.com/" className="hover:underline">GitHub</a>
+            <a href="https://linkedin.com/in/paarthibanselvaraj" className="hover:underline">LinkedIn</a>
+            <a href="mailto:your.email@example.com" className="hover:underline">Email</a>
+          </div>
+        </motion.div>
+      </Section>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Experience</h2>
-        <div className="space-y-4">
-          {[{
-            role: "Lead Developer",
-            company: "eStreamly",
-            duration: "Jan 2021 – Feb 2025",
-            summary: "Architected a video streaming platform integrated with Shopify and social APIs."
-          }, {
-            role: "Frontend Developer",
-            company: "AVEON Infotech (Reach Lite)",
-            duration: "Jan 2019 – Dec 2020",
-            summary: "Led a 5-person team building a salon booking app for US salons."
-          }, {
-            role: "UI Developer",
-            company: "AVEON Infotech (EduManage & Police E-Eye)",
-            duration: "2018 – 2020",
-            summary: "Built UIs for education and law enforcement applications."
-          }].map((exp) => (
-            <Card key={exp.company}>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold">{exp.role} – {exp.company}</h3>
-                <p className="text-sm text-gray-500">{exp.duration}</p>
-                <p className="mt-2">{exp.summary}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <footer className="text-center mt-16">
-        <p>Connect with me:</p>
-        <div className="flex justify-center space-x-4 mt-2">
-          <a href="https://github.com/" className="text-blue-500 hover:underline">GitHub</a>
-          <a href="https://linkedin.com/in/paarthibanselvaraj" className="text-blue-500 hover:underline">LinkedIn</a>
-          <a href="mailto:your.email@example.com" className="text-blue-500 hover:underline">Email</a>
-        </div>
+      <footer className="text-center text-sm py-10 text-gray-400 dark:text-gray-500">
+        © {new Date().getFullYear()} Michael Selvaraj — All rights reserved.
       </footer>
-    </div>
+    </main>
   );
 }
