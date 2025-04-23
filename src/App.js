@@ -8,8 +8,11 @@ import {
 } from "react-icons/fa";
 import profileImg from "./assets/profile.jpg";
 import videoDetails from "./assets/video.mp4";
+import Broadcast from "./assets/Broadcast.webp";
+import reach from "./assets/reach.png";
 
 const skills = [
+  { icon: () => <FaReact />, label: "React" },
   { icon: () => <FaReact />, label: "React Native" },
   { icon: () => <FaNodeJs />, label: "Node.js" },
   { icon: () => <FaAws />, label: "AWS" },
@@ -20,23 +23,35 @@ const skills = [
 
 const projects = [
   {
-    title: "Linach Live Commerce",
-    image: "https://via.placeholder.com/600x400?text=Linach",
-    description: "A livestream shopping platform empowering influencers and brands.",
-    link: "https://linach.live"
+    title: "eStreamly ",
+    image: Broadcast,
+    description: "Architected and developed eStreamly UI, a scalable video streaming platform designed for businesses to host, monetize, and distribute content seamlessly. The solution integrates Shopify for e-commerce and social media APIs (Facebook, Instagram, Twitter) to enable in-stream purchases, audience engagement, and cross-platform sharing.",
+    link: "https://estreamly.com/watch"
   },
   {
     title: "Reach Lite",
-    image: "https://via.placeholder.com/600x400?text=Reach+Lite",
-    description: "Online salon booking and scheduling app for professionals.",
-    link: "https://reachlite.in"
-  }
+    image: reach,
+    description: "Led a 5-person team to develop Reach Lite, an Angular-powered admin panel enabling US salons to manage bookings, staff schedules, and service add-ons (e.g., keratin treatments, color upgrades). The platform increased salon upsell revenue by 30% through intuitive add-on customization and reduced scheduling conflicts by 45% with real-time coordination tools.",
+    link: "https://getreach.ai/"
+  },
+  // {
+  //   title: "Reach Lite",
+  //   image: reach,
+  //   description: "Led a 5-person team to develop Reach Lite, an Angular-powered admin panel enabling US salons to manage bookings, staff schedules, and service add-ons (e.g., keratin treatments, color upgrades). The platform increased salon upsell revenue by 30% through intuitive add-on customization and reduced scheduling conflicts by 45% with real-time coordination tools.",
+  //   link: "https://getreach.ai/"
+  // },
+  // {
+  //   title: "Reach Lite",
+  //   image: reach,
+  //   description: "Led a 5-person team to develop Reach Lite, an Angular-powered admin panel enabling US salons to manage bookings, staff schedules, and service add-ons (e.g., keratin treatments, color upgrades). The platform increased salon upsell revenue by 30% through intuitive add-on customization and reduced scheduling conflicts by 45% with real-time coordination tools.",
+  //   link: "https://getreach.ai/"
+  // }
 ];
 
 const contactLinks = [
-  { icon: <FaGithub />, label: "GitHub", url: "https://github.com/your-github" },
-  { icon: <FaLinkedin />, label: "LinkedIn", url: "https://linkedin.com/in/paarthibanselvaraj" },
-  { icon: <FaEnvelope />, label: "Email", url: "mailto:your.email@example.com" }
+  { icon: <FaGithub />, label: "GitHub", url: "https://github.com/paaricit" },
+  { icon: <FaLinkedin />, label: "LinkedIn", url: "https://www.linkedin.com/in/paarthibanselvaraj/" },
+  { icon: <FaEnvelope />, label: "Email", url: "mailto:paaricit@outlook.com" }
 ];
 
 function Tag({ icon: Icon, label }) {
@@ -127,50 +142,59 @@ export default function App() {
     <div className="relative transition-colors duration-700 dark:bg-gray-900 bg-white">
       <HeaderParallax />
       <div className="relative z-10">
-        <Section id="home">
-          <div className="text-center text-white">
-            <img
-              src={profileImg}
-              alt="Profile"
-              className="mx-auto w-36 h-36 object-cover rounded-full border-4 border-white shadow-lg"
-            />
-            <h1 className="text-4xl sm:text-5xl font-bold mt-6">Michael Selvaraj</h1>
-            <p className="text-lg sm:text-xl mt-3 max-w-2xl mx-auto">
-              Entrepreneur & Developer 
-              {/* focused on Live Commerce & SaaS Innovation */}
-            </p>
-            <div className="flex justify-center mt-6 gap-4">
-              {contactLinks.map(({ icon, label, url }) => (
-                <a key={label} href={url} target="_blank" rel="noreferrer" className="text-2xl hover:text-blue-300">
-                  {icon}
-                </a>
-              ))}
-            </div>
+        <div className="flex flex-wrap">
+          <div className="flex-auto">
+            <Section id="home">
+              <div className="text-center text-white">
+                <img
+                  src={profileImg}
+                  alt="Profile"
+                  className="mx-auto w-36 h-36 object-cover rounded-full border-4 border-white shadow-lg"
+                />
+                <h1 className="text-4xl sm:text-5xl font-bold mt-6">Parthiban Selvaraj</h1>
+                <p className="text-lg sm:text-xl mt-3 max-w-2xl mx-auto">
+                  Entrepreneur & Developer
+                  {/* focused on Live Commerce & SaaS Innovation */}
+                </p>
+                <div className="flex justify-center mt-6 gap-4">
+                  {contactLinks.map(({ icon, label, url }) => (
+                    <a key={label} href={url} target="_blank" rel="noreferrer" className="text-2xl hover:text-blue-300">
+                      {icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </Section>
           </div>
-        </Section>
-
-        <Section id="skills" title="Skills">
-          <div className="flex flex-wrap gap-4 justify-center">
-            {skills.map((skill, index) => (
-              <Tag key={index} icon={skill.icon} label={skill.label} />
-            ))}
+          <div className="flex-auto">
+            <Section id="about" style={{ color: "#fff" }} >
+              <div className="max-w-2xl mx-auto text-center text-lg leading-relaxed" style={{ color: "#fff" }}>
+                I'm Parthiban, an entrepreneur and software developer passionate about creating powerful, intuitive digital experiences. My journey began with curiosity and a drive to build, and today, I specialize in livestream commerce and mobile-first innovations for a global audience.
+              </div>
+            </Section>
+            <Section id="skills" >
+              <div className="flex flex-wrap gap-4 justify-center">
+                {skills.map((skill, index) => (
+                  <Tag key={index} icon={skill.icon} label={skill.label} />
+                ))}
+              </div>
+            </Section>
           </div>
-        </Section>
+        </div>
 
-        <Section id="projects" title="Projects">
+
+
+        <Section id="projects" >
+        <h2 className="text-3xl font-bold pb-4"  style={{ color: "#fff" }} >Projects</h2>
           <ProjectCards />
         </Section>
 
-        <Section id="about" title="About">
-          <div className="max-w-2xl mx-auto text-center text-lg leading-relaxed">
-            I'm Michael, an entrepreneur and software developer passionate about creating powerful, intuitive digital experiences. My journey began with curiosity and a drive to build, and today, I specialize in livestream commerce and mobile-first innovations for a global audience.
-          </div>
-        </Section>
 
-        <Section id="contact" title="Contact">
+
+        <Section id="contact" >
           <form
             className="max-w-xl mx-auto space-y-4"
-            action="https://formspree.io/f/your-form-id"
+            action="https://formspree.io/f/xjkydqww"
             method="POST"
           >
             <input type="text" name="name" placeholder="Your Name" required className="w-full px-4 py-2 border rounded dark:bg-gray-800 dark:border-gray-600" />
