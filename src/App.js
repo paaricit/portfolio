@@ -36,7 +36,7 @@ const projects = [
     link: "https://getreach.ai/"
   },
   {
-    title: "BU - Bharathiyar University",
+    title: "BU",
     image: cms,
     description: "Designed and developed the user interface for EduManage, a comprehensive CMS tailored for colleges to streamline administrative workflows. The UI focuses on intuitive navigation, role-based dashboards, and real-time data visualization to enhance productivity for staff, faculty, and students.",
     link: null
@@ -150,6 +150,15 @@ function HeaderParallax() {
 }
 
 export default function App() {
+  const [shuffledSkills, setShuffledSkills] = useState([...skills]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShuffledSkills(prev => [...skills].sort(() => Math.random() - 0.5));
+    }, 4000); // shuffle every 4 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative transition-colors duration-700 dark:bg-gray-900 bg-white">
       <HeaderParallax />
@@ -184,20 +193,34 @@ export default function App() {
                 I'm Parthiban, an entrepreneur and software developer passionate about creating powerful, intuitive digital experiences. My journey began with curiosity and a drive to build, and today, I specialize in livestream commerce and mobile-first innovations for a global audience.
               </div>
             </Section>
-            <Section id="skills" >
-              <div className="flex flex-wrap gap-4 justify-center">
-                {skills.map((skill, index) => (
-                  <Tag key={index} icon={skill.icon} label={skill.label} />
+            <Section id="skills">
+              <motion.div
+                layout
+                className="flex flex-wrap gap-4 justify-center"
+              >
+                {shuffledSkills.map((skill, index) => (
+                  <motion.div
+                    key={skill.label}
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 rounded shadow text-gray-800 dark:text-white text-sm hover:scale-105 hover:shadow-lg transition-transform duration-300"
+                  >
+                    <span className="text-xl"><skill.icon /></span>
+                    <span>{skill.label}</span>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </Section>
+
           </div>
         </div>
 
 
 
         <Section id="projects" >
-        <h2 className="text-3xl font-bold pb-4"  style={{ color: "#fff" }} >Projects</h2>
+          <h2 className="text-3xl font-bold pb-4" style={{ color: "#fff" }} >Projects</h2>
           <ProjectCards />
         </Section>
 
