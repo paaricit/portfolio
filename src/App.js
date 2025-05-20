@@ -1,10 +1,11 @@
 // Enhanced React portfolio with full-page background video, dark overlay, color tint, and animated section transitions
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   FaGithub, FaLinkedin, FaEnvelope, FaBars, FaTimes, FaArrowUp,
-  FaReact, FaNodeJs, FaAws, FaAngular, FaMobileAlt, FaPaintBrush
+  FaReact, FaNodeJs, FaAws, FaAngular, FaMobileAlt, FaPaintBrush,
+  FaSun, FaMoon
 } from "react-icons/fa";
 import profileImg from "./assets/profile.jpg";
 import videoDetails from "./assets/video.mp4";
@@ -61,6 +62,10 @@ const contactLinks = [
   { icon: <FaEnvelope />, label: "Email", url: "mailto:paaricit@outlook.com" }
 ];
 
+// Lazy load components
+const ProjectCards = lazy(() => import('./components/ProjectCards'));
+const ContactForm = lazy(() => import('./components/ContactForm'));
+
 function Tag({ icon: Icon, label }) {
   return (
     <motion.div
@@ -96,51 +101,33 @@ function Section({ id, title, children }) {
   );
 }
 
-function ProjectCards() {
+function LoadingSpinner() {
   return (
-    <div className="grid md:grid-cols-2 gap-8">
-      {projects.map(({ title, image, description, link }) => (
-        <motion.div
-          key={title}
-          className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <img src={image} alt={title} className="w-full h-64 object-cover" />
-          <div className="p-6">
-            <h3 className="text-2xl font-semibold mb-2">{title}</h3>
-            <p className="mb-4 text-gray-600 dark:text-gray-300">{description}</p>
-
-            {link ? (
-              <a
-                href={link}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                Visit Project →
-              </a>
-            ) : (
-              <span className="text-gray-500"></span>
-            )}
-          </div>
-        </motion.div>
-      ))}
+    <div className="flex justify-center items-center h-32">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
     </div>
   );
 }
 
 function HeaderParallax() {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.75; // Slow down video for better performance
+    }
+  }, []);
+
   return (
     <>
       <video
+        ref={videoRef}
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
         autoPlay
         muted
         loop
         playsInline
+        preload="metadata"
       >
         <source src={videoDetails} type="video/mp4" />
       </video>
@@ -149,18 +136,112 @@ function HeaderParallax() {
   );
 }
 
+function Navigation() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <motion.nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-sm' : 'bg-transparent'
+        }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-8">
+        <div className="flex items-center justify-between h-16">
+          <a href="#home" className="text-white font-bold text-xl">PS</a>
+          <div className="hidden md:flex space-x-8">
+            <a href="#about" className="text-white hover:text-blue-300 transition-colors">About</a>
+            <a href="#skills" className="text-white hover:text-blue-300 transition-colors">Skills</a>
+            <a href="#projects" className="text-white hover:text-blue-300 transition-colors">Projects</a>
+            <a href="#contact" className="text-white hover:text-blue-300 transition-colors">Contact</a>
+          </div>
+        </div>
+      </div>
+    </motion.nav>
+  );
+}
+
+function ScrollToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0.5 }}
+      transition={{ duration: 0.3 }}
+      onClick={scrollToTop}
+      className="fixed bottom-8 right-8 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-50"
+      aria-label="Scroll to top"
+    >
+      <FaArrowUp className="w-6 h-6" />
+    </motion.button>
+  );
+}
+
+function ThemeToggle({ isDark, toggleTheme }) {
+  return (
+    <motion.button
+      onClick={toggleTheme}
+      className="fixed top-4 right-4 p-3 bg-white/10 backdrop-blur-sm text-white rounded-full shadow-lg hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-50"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+    >
+      {isDark ? <FaSun className="w-6 h-6" /> : <FaMoon className="w-6 h-6" />}
+    </motion.button>
+  );
+}
+
 export default function App() {
   const [shuffledSkills, setShuffledSkills] = useState([...skills]);
+  const [isDark, setIsDark] = useState(true);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setShuffledSkills(prev => [...skills].sort(() => Math.random() - 0.5));
-    }, 4000); // shuffle every 4 seconds
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
 
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+  };
+
   return (
-    <div className="relative transition-colors duration-700 dark:bg-gray-900 bg-white">
+    <div className={`relative transition-colors duration-700 ${isDark ? 'dark:bg-gray-900' : 'bg-white'}`}>
+      <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
+      <ScrollToTop />
+      <Navigation />
       <HeaderParallax />
       <div className="relative z-10">
         <div className="flex flex-wrap">
@@ -190,53 +271,52 @@ export default function App() {
           <div className="flex-auto">
             <Section id="about" style={{ color: "#fff" }} >
               <div className="max-w-2xl mx-auto text-center text-lg leading-relaxed" style={{ color: "#fff" }}>
-                I'm Parthiban, an entrepreneur and software developer passionate about creating powerful, intuitive digital experiences. My journey began with curiosity and a drive to build, and today, I specialize in livestream commerce and mobile-first innovations for a global audience.
+                An entrepreneur and software developer driven by curiosity and a passion for building impactful digital experiences. I specialize in livestream commerce and mobile-first innovations, creating intuitive, scalable solutions that connect brands with global audiences.
               </div>
             </Section>
             <Section id="skills">
-              <motion.div
-                layout
-                className="flex flex-wrap gap-4 justify-center"
-              >
-                {shuffledSkills.map((skill, index) => (
-                  <motion.div
-                    key={skill.label}
-                    layout
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 rounded shadow text-gray-800 dark:text-white text-sm hover:scale-105 hover:shadow-lg transition-transform duration-300"
-                  >
-                    <span className="text-xl"><skill.icon /></span>
-                    <span>{skill.label}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
+              <div className="max-w-4xl mx-auto">
+                <motion.div
+                  layout
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                >
+                  {shuffledSkills.map((skill, index) => (
+                    <motion.div
+                      key={skill.label}
+                      layout
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      className="group flex items-center gap-3 px-4 py-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 text-white hover:bg-white/20 transition-all duration-300"
+                    >
+                      <span className="text-2xl text-blue-400 group-hover:scale-110 transition-transform duration-300">
+                        <skill.icon />
+                      </span>
+                      <span className="font-medium">{skill.label}</span>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             </Section>
 
           </div>
         </div>
 
-
-
-        <Section id="projects" >
-          <h2 className="text-3xl font-bold pb-4" style={{ color: "#fff" }} >Projects</h2>
-          <ProjectCards />
+        <Section id="projects">
+          <h2 className="text-3xl font-bold pb-4" style={{ color: "#fff" }}>Projects</h2>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ProjectCards />
+          </Suspense>
         </Section>
 
-
-
-        <Section id="contact" >
-          <form
-            className="max-w-xl mx-auto space-y-4"
-            action="https://formspree.io/f/xjkydqww"
-            method="POST"
-          >
-            <input type="text" name="name" placeholder="Your Name" required className="w-full px-4 py-2 border rounded dark:bg-gray-800 dark:border-gray-600" />
-            <input type="email" name="email" placeholder="Your Email" required className="w-full px-4 py-2 border rounded dark:bg-gray-800 dark:border-gray-600" />
-            <textarea name="message" placeholder="Your Message" rows="5" required className="w-full px-4 py-2 border rounded dark:bg-gray-800 dark:border-gray-600"></textarea>
-            <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Send Message</button>
-          </form>
+        <Section id="contact">
+          <div className="max-w-xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-white">Get in Touch</h2>
+            <Suspense fallback={<LoadingSpinner />}>
+              <ContactForm />
+            </Suspense>
+          </div>
         </Section>
       </div>
     </div>
