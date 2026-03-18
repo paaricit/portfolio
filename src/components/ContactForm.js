@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -12,22 +12,22 @@ export default function ContactForm() {
 
     try {
       const formData = new FormData(e.target);
-      const response = await fetch('https://formspree.io/f/xjkydqww', {
-        method: 'POST',
+      const response = await fetch("https://formspree.io/f/xjkydqww", {
+        method: "POST",
         body: formData,
         headers: {
-          'Accept': 'application/json'
+          Accept: "application/json"
         }
       });
 
       if (response.ok) {
-        setSubmitStatus('success');
+        setSubmitStatus("success");
         e.target.reset();
       } else {
-        setSubmitStatus('error');
+        setSubmitStatus("error");
       }
     } catch (error) {
-      setSubmitStatus('error');
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -40,7 +40,7 @@ export default function ContactForm() {
       aria-label="Contact form"
     >
       <div className="space-y-2">
-        <label htmlFor="name" className="block text-sm font-medium text-white">
+        <label htmlFor="name" className="block text-sm font-medium text-slate-900 dark:text-white">
           Name
         </label>
         <input
@@ -48,13 +48,13 @@ export default function ContactForm() {
           id="name"
           name="name"
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+          className="w-full px-4 py-3 bg-white/85 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
           placeholder="Your name"
           aria-required="true"
         />
       </div>
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-white">
+        <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-white">
           Email
         </label>
         <input
@@ -62,13 +62,13 @@ export default function ContactForm() {
           id="email"
           name="email"
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+          className="w-full px-4 py-3 bg-white/85 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
           placeholder="your.email@example.com"
           aria-required="true"
         />
       </div>
       <div className="space-y-2">
-        <label htmlFor="message" className="block text-sm font-medium text-white">
+        <label htmlFor="message" className="block text-sm font-medium text-slate-900 dark:text-white">
           Message
         </label>
         <textarea
@@ -76,7 +76,7 @@ export default function ContactForm() {
           name="message"
           rows="5"
           required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+          className="w-full px-4 py-3 bg-white/85 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
           placeholder="Your message..."
           aria-required="true"
         ></textarea>
@@ -84,15 +84,14 @@ export default function ContactForm() {
       {submitStatus && (
         <div
           role="alert"
+          aria-live="polite"
           className={`p-4 rounded-lg ${
-            submitStatus === 'success'
-              ? 'bg-green-500/20 text-green-300'
-              : 'bg-red-500/20 text-red-300'
+            submitStatus === "success"
+              ? "bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-200"
+              : "bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-200"
           }`}
         >
-          {submitStatus === 'success'
-            ? 'Message sent successfully!'
-            : 'Failed to send message. Please try again.'}
+          {submitStatus === "success" ? "Message sent successfully!" : "Failed to send message. Please try again."}
         </div>
       )}
       <motion.button
@@ -103,8 +102,8 @@ export default function ContactForm() {
         whileTap={{ scale: 0.98 }}
         aria-label="Send message"
       >
-        {isSubmitting ? 'Sending...' : 'Send Message'}
+        {isSubmitting ? "Sending..." : "Send Message"}
       </motion.button>
     </form>
   );
-} 
+}

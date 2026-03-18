@@ -8,7 +8,7 @@ export const projects = [
     title: "eStreamly",
     image: Broadcast,
     description: "Architected and developed eStreamly UI, a scalable video streaming platform designed for businesses to host, monetize, and distribute content seamlessly. The solution integrates Shopify for e-commerce and social media APIs (Facebook, Instagram, Twitter) to enable in-stream purchases, audience engagement, and cross-platform sharing.",
-    link: "https://estreamly.com/watch"
+    link: "https://get.estreamly.com/"
   },
   {
     title: "Reach Lite",
