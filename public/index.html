@@ -4,11 +4,14 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#f97316" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Parthiban Selvaraj — AI systems engineer and full-stack architect. I build MCP servers, Claude-powered agents, n8n automations and voice AI for teams that need production results, not demos."
     />
+    <meta property="og:title" content="Parthiban Selvaraj — AI Systems Engineer & Full-Stack Architect" />
+    <meta property="og:description" content="I build AI agents that do real work. 9 years shipping production software. Available for remote contract work." />
+    <meta property="og:type" content="website" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -25,6 +28,18 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Portfolio - Parthiban Selvaraj</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("portfolio-theme");
+          var dark =
+            saved === "dark" ||
+            (saved !== "light" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.toggle("dark", dark);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

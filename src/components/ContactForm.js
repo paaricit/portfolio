@@ -33,51 +33,62 @@ export default function ContactForm() {
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 bg-white dark:bg-white/5 border border-slate-300 dark:border-white/15 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all";
+
   return (
-    <form
-      className="space-y-6"
-      onSubmit={handleSubmit}
-      aria-label="Contact form"
-    >
-      <div className="space-y-2">
-        <label htmlFor="name" className="block text-sm font-medium text-slate-900 dark:text-white">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          className="w-full px-4 py-3 bg-white/85 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-          placeholder="Your name"
-          aria-required="true"
-        />
+    <form className="space-y-5" onSubmit={handleSubmit} aria-label="Contact form">
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <label htmlFor="name" className="block text-sm font-medium text-slate-800 dark:text-slate-200">
+            Name
+          </label>
+          <input type="text" id="name" name="name" required className={inputClass} placeholder="Your name" aria-required="true" />
+        </div>
+        <div className="space-y-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-slate-800 dark:text-slate-200">
+            Email
+          </label>
+          <input type="email" id="email" name="email" required className={inputClass} placeholder="you@company.com" aria-required="true" />
+        </div>
       </div>
-      <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-slate-900 dark:text-white">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          className="w-full px-4 py-3 bg-white/85 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-          placeholder="your.email@example.com"
-          aria-required="true"
-        />
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <label htmlFor="project_type" className="block text-sm font-medium text-slate-800 dark:text-slate-200">
+            Project type
+          </label>
+          <select id="project_type" name="project_type" className={inputClass} defaultValue="">
+            <option value="" disabled>Select…</option>
+            <option>AI agents & automation</option>
+            <option>Voice AI agent</option>
+            <option>Full-stack / mobile product</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <label htmlFor="budget" className="block text-sm font-medium text-slate-800 dark:text-slate-200">
+            Budget range
+          </label>
+          <select id="budget" name="budget" className={inputClass} defaultValue="">
+            <option value="" disabled>Select…</option>
+            <option>Under $2k</option>
+            <option>$2k – $10k</option>
+            <option>$10k – $30k</option>
+            <option>$30k+</option>
+          </select>
+        </div>
       </div>
-      <div className="space-y-2">
-        <label htmlFor="message" className="block text-sm font-medium text-slate-900 dark:text-white">
-          Message
+      <div className="space-y-1.5">
+        <label htmlFor="message" className="block text-sm font-medium text-slate-800 dark:text-slate-200">
+          What are you building?
         </label>
         <textarea
           id="message"
           name="message"
-          rows="5"
+          rows="4"
           required
-          className="w-full px-4 py-3 bg-white/85 dark:bg-white/10 border border-gray-300 dark:border-white/20 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
-          placeholder="Your message..."
+          className={`${inputClass} resize-none`}
+          placeholder="A few lines on the workflow and what success looks like."
           aria-required="true"
         ></textarea>
       </div>
@@ -97,7 +108,7 @@ export default function ContactForm() {
       <motion.button
         type="submit"
         disabled={isSubmitting}
-        className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         aria-label="Send message"
